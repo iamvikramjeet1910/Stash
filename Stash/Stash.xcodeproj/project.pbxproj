@@ -6,8 +6,43 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		97FF1B062FD94481005465CE /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B052FD94481005465CE /* Auth */; };
+		97FF1B082FD94481005465CE /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B072FD94481005465CE /* Functions */; };
+		97FF1B0A2FD94481005465CE /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B092FD94481005465CE /* PostgREST */; };
+		97FF1B0C2FD94481005465CE /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B0B2FD94481005465CE /* Realtime */; };
+		97FF1B0E2FD94481005465CE /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B0D2FD94481005465CE /* Storage */; };
+		97FF1B102FD94481005465CE /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B0F2FD94481005465CE /* Supabase */; };
+		97FFC30C2FD85A50005465CE /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 97FFC3022FD85A50005465CE /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		97FFC30A2FD85A50005465CE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97FFC2BF2FD8553E005465CE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 97FFC3012FD85A50005465CE;
+			remoteInfo = ShareExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		97FFC3112FD85A50005465CE /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				97FFC30C2FD85A50005465CE /* ShareExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		97FFC2C72FD8553E005465CE /* Stash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97FFC3022FD85A50005465CE /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -17,6 +52,13 @@
 				Info.plist,
 			);
 			target = 97FFC2C62FD8553E005465CE /* Stash */;
+		};
+		97FFC3102FD85A50005465CE /* Exceptions for "ShareExtension" folder in "ShareExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 97FFC3012FD85A50005465CE /* ShareExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -29,10 +71,31 @@
 			path = Stash;
 			sourceTree = "<group>";
 		};
+		97FFC3032FD85A50005465CE /* ShareExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				97FFC3102FD85A50005465CE /* Exceptions for "ShareExtension" folder in "ShareExtension" target */,
+			);
+			path = ShareExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		97FFC2C42FD8553E005465CE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				97FF1B0A2FD94481005465CE /* PostgREST in Frameworks */,
+				97FF1B082FD94481005465CE /* Functions in Frameworks */,
+				97FF1B102FD94481005465CE /* Supabase in Frameworks */,
+				97FF1B062FD94481005465CE /* Auth in Frameworks */,
+				97FF1B0E2FD94481005465CE /* Storage in Frameworks */,
+				97FF1B0C2FD94481005465CE /* Realtime in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97FFC2FF2FD85A50005465CE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -46,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				97FFC2C92FD8553E005465CE /* Stash */,
+				97FFC3032FD85A50005465CE /* ShareExtension */,
 				97FFC2C82FD8553E005465CE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				97FFC2C72FD8553E005465CE /* Stash.app */,
+				97FFC3022FD85A50005465CE /* ShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,20 +133,50 @@
 				97FFC2C32FD8553E005465CE /* Sources */,
 				97FFC2C42FD8553E005465CE /* Frameworks */,
 				97FFC2C52FD8553E005465CE /* Resources */,
+				97FFC3112FD85A50005465CE /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				97FFC30B2FD85A50005465CE /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				97FFC2C92FD8553E005465CE /* Stash */,
 			);
 			name = Stash;
 			packageProductDependencies = (
+				97FF1B052FD94481005465CE /* Auth */,
+				97FF1B072FD94481005465CE /* Functions */,
+				97FF1B092FD94481005465CE /* PostgREST */,
+				97FF1B0B2FD94481005465CE /* Realtime */,
+				97FF1B0D2FD94481005465CE /* Storage */,
+				97FF1B0F2FD94481005465CE /* Supabase */,
 			);
 			productName = Stash;
 			productReference = 97FFC2C72FD8553E005465CE /* Stash.app */;
 			productType = "com.apple.product-type.application";
+		};
+		97FFC3012FD85A50005465CE /* ShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97FFC30D2FD85A50005465CE /* Build configuration list for PBXNativeTarget "ShareExtension" */;
+			buildPhases = (
+				97FFC2FE2FD85A50005465CE /* Sources */,
+				97FFC2FF2FD85A50005465CE /* Frameworks */,
+				97FFC3002FD85A50005465CE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				97FFC3032FD85A50005465CE /* ShareExtension */,
+			);
+			name = ShareExtension;
+			packageProductDependencies = (
+			);
+			productName = ShareExtension;
+			productReference = 97FFC3022FD85A50005465CE /* ShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -96,6 +191,9 @@
 					97FFC2C62FD8553E005465CE = {
 						CreatedOnToolsVersion = 26.3;
 					};
+					97FFC3012FD85A50005465CE = {
+						CreatedOnToolsVersion = 26.3;
+					};
 				};
 			};
 			buildConfigurationList = 97FFC2C22FD8553E005465CE /* Build configuration list for PBXProject "Stash" */;
@@ -107,18 +205,29 @@
 			);
 			mainGroup = 97FFC2BE2FD8553E005465CE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 97FFC2C82FD8553E005465CE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				97FFC2C62FD8553E005465CE /* Stash */,
+				97FFC3012FD85A50005465CE /* ShareExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		97FFC2C52FD8553E005465CE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97FFC3002FD85A50005465CE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +244,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		97FFC2FE2FD85A50005465CE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		97FFC30B2FD85A50005465CE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 97FFC3012FD85A50005465CE /* ShareExtension */;
+			targetProxy = 97FFC30A2FD85A50005465CE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		97FFC2DB2FD8553F005465CE /* Debug */ = {
@@ -143,9 +267,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Stash/Stash.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SVG9TVCS2H;
+				DEVELOPMENT_TEAM = HMY846G9U2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stash/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -174,9 +299,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Stash/Stash.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SVG9TVCS2H;
+				DEVELOPMENT_TEAM = HMY846G9U2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stash/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -321,6 +447,64 @@
 			};
 			name = Release;
 		};
+		97FFC30E2FD85A50005465CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HMY846G9U2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShareExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Vikram.Stash.Stash.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		97FFC30F2FD85A50005465CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HMY846G9U2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShareExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Vikram.Stash.Stash.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -342,7 +526,60 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		97FFC30D2FD85A50005465CE /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				97FFC30E2FD85A50005465CE /* Debug */,
+				97FFC30F2FD85A50005465CE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase-community/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		97FF1B052FD94481005465CE /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		97FF1B072FD94481005465CE /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		97FF1B092FD94481005465CE /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		97FF1B0B2FD94481005465CE /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		97FF1B0D2FD94481005465CE /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		97FF1B0F2FD94481005465CE /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97FFC2BF2FD8553E005465CE /* Project object */;
 }
