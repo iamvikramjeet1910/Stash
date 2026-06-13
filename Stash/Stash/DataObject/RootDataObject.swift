@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 enum TabId: String {
-    case home
+    case shopping
     case social
-    case profile
+    case weblinks
 }
 
 public struct RootDataObject {
@@ -40,7 +40,7 @@ public struct TabObject {
     let selectedTextColor: UIColor
     let unselectedTextColor: UIColor
 
-    let result: [SharedDataObject]
+    var result: [SharedDataObject]
     let header: HeaderObject
 
     init(
@@ -83,63 +83,39 @@ struct HeaderObject {
     }
 }
 
-struct SharedDataObject {
+struct SharedDataObject: Codable {
+    let imageUrlString: String?
+    let videoName: String?
+    let title: String?
+    let subtitle: String?
+    let userId: String?
+    let tabId: String?
 
-    let image: UIImage
-    let video: UIImage
-    let title: String
-    let subtitle: String
+    enum CodingKeys: String, CodingKey {
+        case imageUrlString = "image"    // Maps to 'image' column in Supabase
+        case videoName = "video"         // Maps to 'video' column in Supabase
+        case title
+        case subtitle
+        case userId = "user_id"          // Maps to 'user_id' column in Supabase
+        case tabId = "tab_id"            // Maps to 'tab_id' column in Supabase
+    }
 }
 
 extension RootDataObject {
 
     static func mockData() -> RootDataObject {
 
-        let selectedBgColor = CrystalColor.crystalSilver.color
-        let unselectedBgColor = CrystalColor.clear.color
-
-        let selectedTextColor = CrystalColor.crystalBlack.color
-        let unselectedTextColor = CrystalColor.crystalWhite.color
-
-        // MARK: - Home Mock Data
-
-        let homeItems: [SharedDataObject] = (1...20).map { index in
-            SharedDataObject(
-                image: UIImage(systemName: "photo")!,
-                video: UIImage(systemName: "play.rectangle.fill")!,
-                title: "Home Item \(index)",
-                subtitle: "Home Subtitle \(index)"
-            )
-        }
-
-        // MARK: - Social Mock Data
-
-        let socialItems: [SharedDataObject] = (1...20).map { index in
-            SharedDataObject(
-                image: UIImage(systemName: "person.2.fill")!,
-                video: UIImage(systemName: "video.fill")!,
-                title: "Social Item \(index)",
-                subtitle: "Social Subtitle \(index)"
-            )
-        }
-
-        // MARK: - Profile Mock Data
-
-        let profileItems: [SharedDataObject] = (1...20).map { index in
-            SharedDataObject(
-                image: UIImage(systemName: "person.crop.circle.fill")!,
-                video: UIImage(systemName: "play.rectangle.fill")!,
-                title: "Profile Item \(index)",
-                subtitle: "Profile Subtitle \(index)"
-            )
-        }
+        let selectedBgColor    = StashTheme.tabSelectedBg
+        let unselectedBgColor  = CrystalColor.clear.color
+        let selectedTextColor  = StashTheme.tabSelectedFg
+        let unselectedTextColor = StashTheme.tabUnselectedFg
 
         let tabs: [TabObject] = [
 
             TabObject(
-                tabId: .home,
-                icon: UIImage(systemName: "house.fill")!,
-                title: "Home",
+                tabId: .shopping,
+                icon: UIImage(systemName: "bag.fill")!,
+                title: "Shopping",
                 selectedBgColor: selectedBgColor,
                 unselectedBgColor: unselectedBgColor,
                 selectedTextColor: selectedTextColor,
@@ -149,13 +125,13 @@ extension RootDataObject {
                     leftImage: UIImage(systemName: "house.fill")!,
                     rightImage: UIImage(systemName: "bell.fill")!
                 ),
-                result: homeItems
+                result: []
             ),
 
             TabObject(
                 tabId: .social,
-                icon: UIImage(systemName: "message.fill")!,
-                title: "Social",
+                icon: UIImage(systemName: "play.rectangle.fill")!,
+                title: "Social Media",
                 selectedBgColor: selectedBgColor,
                 unselectedBgColor: unselectedBgColor,
                 selectedTextColor: selectedTextColor,
@@ -165,13 +141,13 @@ extension RootDataObject {
                     leftImage: UIImage(systemName: "message.fill")!,
                     rightImage: UIImage(systemName: "paperplane.fill")!
                 ),
-                result: socialItems
+                result: []
             ),
 
             TabObject(
-                tabId: .profile,
-                icon: UIImage(systemName: "person.fill")!,
-                title: "Profile",
+                tabId: .weblinks,
+                icon: UIImage(systemName: "link.circle.fill")!,
+                title: "Links",
                 selectedBgColor: selectedBgColor,
                 unselectedBgColor: unselectedBgColor,
                 selectedTextColor: selectedTextColor,
@@ -181,7 +157,7 @@ extension RootDataObject {
                     leftImage: UIImage(systemName: "person.fill")!,
                     rightImage: UIImage(systemName: "gearshape.fill")!
                 ),
-                result: profileItems
+                result: []
             )
         ]
 

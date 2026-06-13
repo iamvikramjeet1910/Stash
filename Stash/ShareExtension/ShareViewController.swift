@@ -8,125 +8,237 @@
 import UIKit
 import Social
 import UniformTypeIdentifiers
+import LinkPresentation
+import ImageIO
 
 class ShareViewController: SLComposeServiceViewController {
 
+    // 1. Unify the active App Group ID across your expansion targets
+    private let appGroupId = "group.Vikram.Stash.Stash"
+
     override func isContentValid() -> Bool {
-        // Validation logic: The "Post" button will be enabled only if this returns true.
-        // You can check 'contentText' length here if you want to require user typing.
         return true
     }
 
+    // MANDATORY FIX: Completely disables Apple's heavy automatic preview renderer
+    // This blocks low-level CGSFillDRAM64 memory allocation crashes right at launch
+    override func loadPreviewView() -> UIView! {
+        let dummyView = UIView()
+        dummyView.backgroundColor = .clear
+        return dummyView
+    }
+
     override func didSelectPost() {
-        // 1. Ensure we have items to unpack
         guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
               let attachments = extensionItem.attachments else {
             self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
             return
         }
         
-        // 2. Define standard type identifiers matching your Info.plist
         let urlType = UTType.url.identifier
         let textType = UTType.text.identifier
         let imageType = UTType.image.identifier
         
-        // Setup async tracking and thread safety
         let extractionGroup = DispatchGroup()
         let synchronizationQueue = DispatchQueue(label: "com.Vikram.Stash.ShareSyncQueue")
-        var localStashedItems: [[String: String]] = []
         
-        // 3. Process every shared item found in the attachment payload
+        // Context storage placeholders
+        var extractedTitle: String? = nil
+        var extractedSubtitle: String? = nil
+        var extractedImageUrl: String? = nil
+        
         for provider in attachments {
             
-            // Check for Web Links / URLs
+            // 1. Handle Shared Web Links (Flipkart, Instagram, Safari, etc.)
             if provider.hasItemConformingToTypeIdentifier(urlType) {
                 extractionGroup.enter()
                 provider.loadItem(forTypeIdentifier: urlType, options: nil) { (item, error) in
-                    if let url = item as? URL {
-                        synchronizationQueue.async {
-                            localStashedItems.append(["type": "url", "value": url.absoluteString])
-                            extractionGroup.leave()
-                        }
-                    } else {
+                    guard let url = item as? URL else {
                         extractionGroup.leave()
+                        return
                     }
-                }
-            }
-            
-            // Check for Text Snippets / Copied Clipboard Text
-            else if provider.hasItemConformingToTypeIdentifier(textType) {
-                extractionGroup.enter()
-                provider.loadItem(forTypeIdentifier: textType, options: nil) { (item, error) in
-                    if let text = item as? String {
-                        synchronizationQueue.async {
-                            localStashedItems.append(["type": "text", "value": text])
-                            extractionGroup.leave()
-                        }
-                    } else {
-                        extractionGroup.leave()
+                    
+                    synchronizationQueue.async {
+                        extractedSubtitle = url.absoluteString
                     }
-                }
-            }
-            
-            // Check for Images (Supports up to 5 as configured in your plist)
-            else if provider.hasItemConformingToTypeIdentifier(imageType) {
-                extractionGroup.enter()
-                provider.loadItem(forTypeIdentifier: imageType, options: nil) { (item, error) in
-                    // System images often load as a URL referencing a local cached file path
-                    if let fileURL = item as? URL {
-                        synchronizationQueue.async {
-                            localStashedItems.append(["type": "image_path", "value": fileURL.path])
+                    
+                    let metadataProvider = LPMetadataProvider()
+                    metadataProvider.startFetchingMetadata(for: url) { metadata, error in
+                        guard let metadata = metadata, error == nil else {
                             extractionGroup.leave()
+                            return
                         }
-                    } else if let image = item as? UIImage {
-                        // Fallback fallback if the system passes a raw image object instead
-                        if let imageData = image.jpegData(compressionQuality: 0.8),
-                           let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.Vikram.Stash.Stash") {
-                            
-                            let filename = "shared_\(UUID().uuidString).jpg"
-                            let fileURL = sharedDirectory.appendingPathComponent(filename)
-                            
-                            try? imageData.write(to: fileURL)
-                            synchronizationQueue.async {
-                                localStashedItems.append(["type": "image_path", "value": fileURL.path])
+                        
+                        synchronizationQueue.async {
+                            extractedTitle = metadata.title
+                        }
+                        
+                        if let imageProvider = metadata.imageProvider {
+                            // Fetch raw Data to avoid premature, uncompressed UIImage memory inflation
+                            imageProvider.loadDataRepresentation(forTypeIdentifier: UTType.image.identifier) { data, _ in
+                                autoreleasepool {
+                                    if let data = data,
+                                       let downsampledData = self.downsampleRawDataSecurely(data, maxPixelSize: 300),
+                                       let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: self.appGroupId) {
+                                        
+                                        let filename = "scraped_\(UUID().uuidString).jpg"
+                                        let fileURL = sharedDirectory.appendingPathComponent(filename)
+                                        try? downsampledData.write(to: fileURL)
+                                        
+                                        synchronizationQueue.async {
+                                            extractedImageUrl = filename
+                                        }
+                                    }
+                                }
                                 extractionGroup.leave()
                             }
                         } else {
                             extractionGroup.leave()
                         }
-                    } else {
-                        extractionGroup.leave()
                     }
+                }
+            }
+            
+            // 2. Handle Plain Text Clipboard Snippets
+            else if provider.hasItemConformingToTypeIdentifier(textType) {
+                extractionGroup.enter()
+                provider.loadItem(forTypeIdentifier: textType, options: nil) { (item, error) in
+                    if let text = item as? String {
+                        synchronizationQueue.async {
+                            extractedSubtitle = text
+                            if extractedTitle == nil { extractedTitle = text }
+                        }
+                    }
+                    extractionGroup.leave()
+                }
+            }
+            
+            // 3. Handle System Photos / Direct Screenshots
+            else if provider.hasItemConformingToTypeIdentifier(imageType) {
+                extractionGroup.enter()
+                provider.loadItem(forTypeIdentifier: imageType, options: nil) { (item, error) in
+                    autoreleasepool {
+                        var finalImageData: Data? = nil
+                        
+                        if let fileURL = item as? URL {
+                            finalImageData = self.downsample(fileURL: fileURL, maxPixelSize: 800)
+                        } else if let image = item as? UIImage {
+                            finalImageData = self.convertUIImageSecurely(image, maxPixelSize: 800)
+                        }
+                        
+                        if let finalImageData = finalImageData,
+                           let sharedDirectory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: self.appGroupId) {
+                            
+                            let filename = "shared_\(UUID().uuidString).jpg"
+                            let targetURL = sharedDirectory.appendingPathComponent(filename)
+                            try? finalImageData.write(to: targetURL)
+                            
+                            synchronizationQueue.async {
+                                extractedImageUrl = filename
+                            }
+                        }
+                    }
+                    extractionGroup.leave()
                 }
             }
         }
         
-        // 4. Once all data elements finish background loading, save them and close out
-        extractionGroup.notify(queue: .main) {
-            if !localStashedItems.isEmpty {
-                self.saveToSharedContainer(items: localStashedItems)
-            }
+        // Execute upload when all thread extraction routines finish
+        extractionGroup.notify(queue: .main, execute: { [weak self] in
+            guard let self = self else { return }
             
-            // Inform the host system that the transaction is done so the extension UI collapses smoothly
-            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-        }
+            let finalTitle = extractedTitle ?? ((self.contentText != nil && !self.contentText!.isEmpty) ? self.contentText! : "Shared Link")
+            let finalSubtitle = extractedSubtitle ?? "No description available"
+            let finalImageUrl = extractedImageUrl ?? ""
+            
+            let targetTabId = self.classifyURLAndGetTabId(finalSubtitle)
+            
+            // Fire data payload directly into your Supabase endpoint
+            APIService.shared.postData(
+                imageUrl: finalImageUrl,
+                videoUrl: "",
+                title: finalTitle,
+                subtitle: finalSubtitle,
+                tabId: targetTabId
+            ) { [weak self] success in
+                guard let self = self else { return }
+                
+                // ✅ CRITICAL FIX: Always bounce back to the Main Thread to dismiss extensions safely.
+                // This prevents the system watchdog from abruptly killing your XPC process connection.
+                DispatchQueue.main.async {
+                    self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+                }
+            }
+        })
     }
 
     override func configurationItems() -> [Any]! {
-        // Used if you ever want to append extra settings cells to the bottom of Apple's standard system sheet
         return []
     }
     
-    // MARK: - App Group Persistence
-    private func saveToSharedContainer(items: [[String: String]]) {
-        if let sharedDefaults = UserDefaults(suiteName: "group.Vikram.Stash.Stash") {
-            // Save the compiled array of item dictionaries
-            sharedDefaults.set(items, forKey: "pending_stashed_items")
-            // Include optional user comment typed in the sheet
-            if let userComment = contentText, !userComment.isEmpty {
-                sharedDefaults.set(userComment, forKey: "pending_stash_comment")
-            }
-            sharedDefaults.synchronize()
+    // MARK: - Classification Routing Engine
+    private func classifyURLAndGetTabId(_ urlString: String) -> String {
+        guard let url = URL(string: urlString), let host = url.host?.lowercased() else {
+            return "weblinks"
         }
+        
+        let shoppingDomains = ["flipkart.com", "amazon.in", "amazon.com", "myntra.com", "ajio.com", "meesho.com", "tataqliq.com"]
+        if shoppingDomains.contains(where: { host.contains($0) }) {
+            return "shopping"
+        }
+        
+        let socialDomains = ["instagram.com", "facebook.com", "tiktok.com", "twitter.com", "x.com", "reddit.com", "youtube.com", "youtu.be"]
+        if socialDomains.contains(where: { host.contains($0) }) {
+            return "social"
+        }
+        
+        return "weblinks"
+    }
+    
+    // MARK: - CoreGraphics & ImageIO Memory Clamping Helpers
+    private func downsampleRawDataSecurely(_ imageData: Data, maxPixelSize: CGFloat) -> Data? {
+        let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let imageSource = CGImageSourceCreateWithData(imageData as CFData, imageSourceOptions) else { return nil }
+        
+        let downsampleOptions = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceShouldCacheImmediately: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize
+        ] as CFDictionary
+        
+        guard let downsampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions) else { return nil }
+        return UIImage(cgImage: downsampledImage).jpegData(compressionQuality: 0.7)
+    }
+    
+    private func downsample(fileURL: URL, maxPixelSize: CGFloat) -> Data? {
+        let imageSourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+        guard let imageSource = CGImageSourceCreateWithURL(fileURL as CFURL, imageSourceOptions) else { return nil }
+        
+        let downsampleOptions = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceShouldCacheImmediately: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize
+        ] as CFDictionary
+        
+        guard let downsampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions) else { return nil }
+        return UIImage(cgImage: downsampledImage).jpegData(compressionQuality: 0.7)
+    }
+    
+    private func convertUIImageSecurely(_ image: UIImage, maxPixelSize: CGFloat) -> Data? {
+        let size = image.size
+        let scale = min(maxPixelSize / size.width, maxPixelSize / size.height, 1.0)
+        let newSize = CGSize(width: size.width * scale, height: size.height * scale)
+        
+        let format = UIGraphicsImageRendererFormat.default()
+        format.scale = 1.0
+        format.preferredRange = .standard
+        
+        let renderer = UIGraphicsImageRenderer(size: newSize, format: format)
+        let downsampledImage = renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: newSize))
+        }
+        return downsampledImage.jpegData(compressionQuality: 0.7)
     }
 }

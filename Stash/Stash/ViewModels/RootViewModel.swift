@@ -9,7 +9,8 @@ import UIKit
 
 final class RootViewModel: RootViewControllerDataSource {
     
-    private var tabs : [TabObject] = RootDataObject.mockData().tabs
+    private var tabs: [TabObject] = RootDataObject.mockData().tabs
+//    private var viewActions: ((RootViewController.ControllerActions) -> Void)?
     
     func getTabData(index: Int) -> TabObject? {
         guard tabs.count > index else { return nil}
@@ -18,5 +19,13 @@ final class RootViewModel: RootViewControllerDataSource {
     
     func getTabs() -> RootDataObject {
         RootDataObject.mockData()
+    }
+    
+//    func setup(withActions actions: @escaping (RootViewController.ControllerActions) -> Void) {
+//        self.viewActions = actions
+//    }
+    
+    func viewDidLoad() {
+        
     }
 }

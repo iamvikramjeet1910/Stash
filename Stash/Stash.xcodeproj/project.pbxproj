@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9787149D2FDD9B15007C7F30 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */; };
+		9787149E2FDD9B15007C7F30 /* Secrets.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */; };
+		9787F6FB2FDBFDF7007C7F30 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 9787F6FA2FDBFDF7007C7F30 /* Lottie */; };
 		97FF1B062FD94481005465CE /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B052FD94481005465CE /* Auth */; };
 		97FF1B082FD94481005465CE /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B072FD94481005465CE /* Functions */; };
 		97FF1B0A2FD94481005465CE /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 97FF1B092FD94481005465CE /* PostgREST */; };
@@ -41,15 +44,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		97FFC2C72FD8553E005465CE /* Stash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97FFC3022FD85A50005465CE /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		97FF560A2FDAF073005465CE /* Exceptions for "Stash" folder in "ShareExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				APIService.swift,
+				Colors.swift,
+				DataObject/RootDataObject.swift,
+			);
+			target = 97FFC3012FD85A50005465CE /* ShareExtension */;
+		};
 		97FFC2D92FD8553F005465CE /* Exceptions for "Stash" folder in "Stash" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				Views/Untitled.swift,
 			);
 			target = 97FFC2C62FD8553E005465CE /* Stash */;
 		};
@@ -67,6 +81,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				97FFC2D92FD8553F005465CE /* Exceptions for "Stash" folder in "Stash" target */,
+				97FF560A2FDAF073005465CE /* Exceptions for "Stash" folder in "ShareExtension" target */,
 			);
 			path = Stash;
 			sourceTree = "<group>";
@@ -87,6 +102,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97FF1B0A2FD94481005465CE /* PostgREST in Frameworks */,
+				9787F6FB2FDBFDF7007C7F30 /* Lottie in Frameworks */,
 				97FF1B082FD94481005465CE /* Functions in Frameworks */,
 				97FF1B102FD94481005465CE /* Supabase in Frameworks */,
 				97FF1B062FD94481005465CE /* Auth in Frameworks */,
@@ -108,6 +124,7 @@
 		97FFC2BE2FD8553E005465CE = {
 			isa = PBXGroup;
 			children = (
+				9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */,
 				97FFC2C92FD8553E005465CE /* Stash */,
 				97FFC3032FD85A50005465CE /* ShareExtension */,
 				97FFC2C82FD8553E005465CE /* Products */,
@@ -151,6 +168,7 @@
 				97FF1B0B2FD94481005465CE /* Realtime */,
 				97FF1B0D2FD94481005465CE /* Storage */,
 				97FF1B0F2FD94481005465CE /* Supabase */,
+				9787F6FA2FDBFDF7007C7F30 /* Lottie */,
 			);
 			productName = Stash;
 			productReference = 97FFC2C72FD8553E005465CE /* Stash.app */;
@@ -207,6 +225,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				9787F6F92FDBFDF7007C7F30 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 97FFC2C82FD8553E005465CE /* Products */;
@@ -224,6 +243,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9787149E2FDD9B15007C7F30 /* Secrets.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +251,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9787149D2FDD9B15007C7F30 /* Secrets.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +285,7 @@
 /* Begin XCBuildConfiguration section */
 		97FFC2DB2FD8553F005465CE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -274,7 +296,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stash/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -296,6 +318,7 @@
 		};
 		97FFC2DC2FD8553F005465CE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -306,7 +329,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Stash/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -328,6 +351,7 @@
 		};
 		97FFC2DD2FD8553F005465CE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -392,6 +416,7 @@
 		};
 		97FFC2DE2FD8553F005465CE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -449,6 +474,7 @@
 		};
 		97FFC30E2FD85A50005465CE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -478,6 +504,7 @@
 		};
 		97FFC30F2FD85A50005465CE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9787149C2FDD9B15007C7F30 /* Secrets.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -538,6 +565,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9787F6F92FDBFDF7007C7F30 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 		97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/supabase-community/supabase-swift";
@@ -549,6 +584,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9787F6FA2FDBFDF7007C7F30 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9787F6F92FDBFDF7007C7F30 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
 		97FF1B052FD94481005465CE /* Auth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 97FF1B042FD94481005465CE /* XCRemoteSwiftPackageReference "supabase-swift" */;

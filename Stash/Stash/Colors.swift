@@ -126,6 +126,88 @@ enum CrystalColor {
     }
 }
 
+// MARK: - StashTheme (adaptive light / dark colors)
+
+enum StashTheme {
+
+    /// App-wide background — obsidian in dark, frost-white in light
+    static let appBackground = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? UIColor(red: 0.07, green: 0.07, blue: 0.10, alpha: 1)
+            : CrystalColor.frostWhite.color
+    }
+
+    /// Header / status-bar surface — elevated above the content background
+    static let headerBackground = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? UIColor(red: 0.11, green: 0.11, blue: 0.15, alpha: 1)
+            : UIColor.white
+    }
+
+    /// 1 pt separator at the bottom edge of the header
+    static let headerSeparator = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? UIColor.white.withAlphaComponent(0.08)
+            : UIColor.separator
+    }
+
+    /// Floating card surface
+    static let cardSurface = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? UIColor.white.withAlphaComponent(0.05)
+            : UIColor.white
+    }
+
+    /// Card outline border
+    static let cardBorder = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? UIColor.white.withAlphaComponent(0.15)
+            : UIColor.black.withAlphaComponent(0.08)
+    }
+
+    /// Thin separator between image and title inside a card
+    static let cardSeparator = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? UIColor.white.withAlphaComponent(0.12)
+            : UIColor.separator
+    }
+
+    /// Floating tab bar pill surface
+    static let tabBarPill = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? UIColor(red: 0.10, green: 0.10, blue: 0.12, alpha: 0.97)
+            : UIColor.white
+    }
+
+    /// Inline search bar container background
+    static let searchBarBackground = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? UIColor.white.withAlphaComponent(0.12)
+            : UIColor.black.withAlphaComponent(0.07)
+    }
+
+    /// Tab item selected background
+    static let tabSelectedBg = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? CrystalColor.crystalSilver.color
+            : CrystalColor.graphiteBlack.color
+    }
+
+    /// Tab item selected icon/label foreground
+    static let tabSelectedFg = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? CrystalColor.crystalBlack.color
+            : CrystalColor.crystalWhite.color
+    }
+
+    /// Tab item unselected icon/label foreground
+    static let tabUnselectedFg = UIColor { tc in
+        tc.userInterfaceStyle == .dark
+            ? CrystalColor.crystalWhite.color
+            : CrystalColor.graphiteBlack.color
+    }
+}
+
 // MARK: - UIColor + Hex
 
 extension UIColor {

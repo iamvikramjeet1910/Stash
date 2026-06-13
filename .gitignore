@@ -1,0 +1,3 @@
+# Ignore the Supabase secrets configuration file
+Secrets.xcconfig
+**/Secrets.xcconfig

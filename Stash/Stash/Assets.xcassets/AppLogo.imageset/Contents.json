@@ -3,32 +3,17 @@
     {
       "filename" : "Gemini_Generated_Image_e7jy67e7jy67e7jy (1).png",
       "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
+      "scale" : "1x"
     },
     {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
       "filename" : "Gemini_Generated_Image_e7jy67e7jy67e7jy (1) 1.png",
       "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
+      "scale" : "2x"
     },
     {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "tinted"
-        }
-      ],
       "filename" : "Gemini_Generated_Image_e7jy67e7jy67e7jy (1) 2.png",
       "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
+      "scale" : "3x"
     }
   ],
   "info" : {
